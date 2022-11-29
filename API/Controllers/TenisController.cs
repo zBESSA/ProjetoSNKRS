@@ -50,7 +50,7 @@ namespace API.Controllers
             
         }
 
-        [HttpPut("{TenisCod")]
+        [HttpPut("{TenisCod}")]
         public ActionResult put(string TenisCod){
             return Ok();
         }
