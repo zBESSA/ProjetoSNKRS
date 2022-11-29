@@ -1,0 +1,13 @@
+aside.logo {
+    background-color: rgba(255, 255, 255, 0.178);
+    border-radius: 100px;
+    width: 84px;
+    height: 84px;
+    margin: 20px;
+}
+
+aside.logo img {
+    width: 80px;
+    padding-top: 15px;
+    padding-left: 2px;
+}

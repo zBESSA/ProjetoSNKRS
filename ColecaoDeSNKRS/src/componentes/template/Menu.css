@@ -1,0 +1,16 @@
+nav.menu {
+    margin-left: 1150px;
+    margin-top: 10px;
+}
+
+.menu a {
+    text-decoration:underline;
+    color: rgb(0, 0, 0);
+    font-size: 30px;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.menu a:hover {
+    color: #000000;
+}
