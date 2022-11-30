@@ -27,10 +27,13 @@ export default class CrudTenis extends Component {
 
     salvar(){
         const tenis = this.state.tenis;
-        tenis.cod = Number(tenis.cod);
-        const metodo = 'post';
+        const metodo =  tenis.id ? 'put' : 'post';
+        const url = tenis.id ? `${urlAPI}/${tenis.id}` : urlAPI;
+        tenis.tamanho = Number(tenis.tamanho)
+        tenis.id = Number(tenis.id)
+        console.log(this.state.tenis)
 
-        axios[metodo](urlAPI, tenis)
+        axios[metodo](url, tenis)
             .then(resp => {
                 const lista = this.getListaAtualizada(resp.data)
                 this.setState({tenis: initialState.tenis, lista})
@@ -136,6 +139,16 @@ export default class CrudTenis extends Component {
                                 <td>{tenis.cod}</td>
                                 <td>{tenis.nome}</td>
                                 <td>{tenis.tamanho}</td>
+                                <td>
+                                    <button onClick={() => this.carregar(tenis)}>
+                                        Altera
+                                    </button>
+                                </td>
+                                <td>
+                                    <button onClick={() => this.remover(tenis)}>
+                                        Remove
+                                    </button>
+                                </td>
                             </tr>
                         )}
                     </tbody>
