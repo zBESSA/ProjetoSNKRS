@@ -1,17 +1,58 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import './CrudTenis.css';
 import Main from '../template/Main';
 
-const title = "Cadastro de Tenis";
+const title = "Coleção de Tenis";
 
-const Tenis = [
-    { 'id': 1, 'cod': '1111', 'nome': 'Air Force 1', 'tamanho': 42 },
-    { 'id': 2, 'cod': '2222', 'nome': 'Jordan 13', 'tamanho': 39 },
-    { 'id': 3, 'cod': '3333', 'nome': 'Aunt Pearl', 'tamanho': 35 },
-    { 'id': 4, 'cod': '4444', 'nome': 'Cut Out', 'tamanho': 43 },
-];
+const urlAPI = "http://localhost:5174/api/tenis";
+const initialState = {
+    tenis: {id: 0, cod: '', nome:'', tamanho: 0},
+    lista: []
+}
 
 export default class CrudTenis extends Component {
+
+    state = {...initialState}
+
+    componentDidMount(){
+        axios(urlAPI).then(resp =>{
+           this.setState({lista:resp.data})
+        })
+    }
+
+    limpar(){
+        this.setState({tenis: initialState.tenis});
+    }
+
+    salvar(){
+        const tenis = this.state.tenis;
+        tenis.cod = Number(tenis.cod);
+        const metodo = 'post';
+
+        axios[metodo](urlAPI, tenis)
+            .then(resp => {
+                const lista = this.getListaAtualizada(resp.data)
+                this.setState({tenis: initialState.tenis, lista})
+            })
+    }
+
+    getListaAtualizada(tenis){
+        const lista = this.state.lista.filter(a => a.id !== tenis.id);
+        lista.unshift(tenis);
+        return lista;
+    }
+
+    atualizaCampo(event){
+        //clonar usuário a partir do state, para não alterar o state diretamente
+        const tenis = {...this.state.tenis};
+        //usar o atributo NAME do input para identificar o campo a ser atualizado
+        tenis[event.target.name] = event.target.value;
+        //atualizar o state
+        this.setState({tenis});
+    }
+
+
     renderTable() {
         return (
             <div className="listagem">
@@ -25,7 +66,7 @@ export default class CrudTenis extends Component {
                     </thead>
 
                     <tbody>
-                        {Tenis.map(
+                        {this.state.lista.map(
                             (tenis) =>
                             <tr key={tenis.id}>
                                 <td>{tenis.cod}</td>

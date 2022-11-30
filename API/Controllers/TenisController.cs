@@ -40,7 +40,7 @@ namespace API.Controllers
             try{
                 _context.Tenis.Add(model);
                 if(await _context.SaveChangesAsync() == 1){
-                    return Created($"/api/tenis/{model.cod}",model);
+                    return Created($"/api/tenis/{ model.cod}", model);
                 }
             }
             catch{
@@ -51,13 +51,38 @@ namespace API.Controllers
         }
 
         [HttpPut("{TenisCod}")]
-        public ActionResult put(string TenisCod){
-            return Ok();
+        public async Task<ActionResult> put(int TenisId, Tenis dadosTenisAlt){
+            try{
+                var result = await _context.Tenis.FindAsync(TenisId);
+                if(TenisId != result.id){
+                    return BadRequest();
+                }
+                result.cod = dadosTenisAlt.cod;
+                result.nome = dadosTenisAlt.nome;
+                result.tamanho = dadosTenisAlt.tamanho;
+                await _context.SaveChangesAsync();
+                return Created($"/api/tenis/{dadosTenisAlt.cod}",dadosTenisAlt);
+            }
+            catch{
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Falha ao conectar no BD");
+
+            }
         }
 
-        [HttpDelete("{TenisCod}")]
-        public ActionResult delete(string TenisCod){
-            return Ok();
+        [HttpDelete("{TenisId}")]
+        public async Task<ActionResult> delete(int TenisId){
+            try{
+                var tenis = await _context.Tenis.FindAsync(TenisId);
+                if(tenis == null){
+                    return NotFound();
+                }
+                _context.Remove(tenis);
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch{
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Falha ao conectar no BD");
+            }
         }
     }
 }

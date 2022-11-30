@@ -1,0 +1,103 @@
+.tituloListagem {
+    margin-left: 20px;
+}
+    
+.listaTenis {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 20px;
+}
+
+.cabecTabela {
+    color: rgb(0, 0, 0);
+    background-color: rgba(253, 253, 253, 0.541);
+    font-size: 20px;
+    text-align: center;
+}
+
+th, td {
+    padding: 5px;
+    backdrop-filter: blur(5px);
+    text-align: center;
+}
+
+.tabTituloRa {
+    width: 10px;
+}
+
+.tabTituloNome {
+    width: 400px;
+}
+
+.form-input1{
+    display: inline-block;
+    width: 10%;
+    padding: 4px;
+    margin: 1px 0;
+}
+
+.form-input2{
+    display: inline-block;
+    width: 40%;
+    padding: 4px;
+    margin: 1px 0;
+}
+
+.form-input{
+    display: inline-block;
+    width: 10%;
+    padding: 4px;
+    margin: 1px 0;
+}
+
+.inclui-container {
+    margin: 20px;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+.btnSalvar {
+    background-color: lightblue;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px 5px 5px 30px;
+}
+
+.btnCancelar{
+    background-color: gainsboro;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+label {
+    padding: 10px;
+}
+
+.tituloCadastro {
+margin-left: 30px;
+}
+
+.btnSalvar {
+    background-color: lightblue;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px 5px 5px 30px;
+}
+.btnCancelar{
+    background-color: gainsboro;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+label {
+    padding: 10px;
+}

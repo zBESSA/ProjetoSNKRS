@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigurationManager configuration = builder.Configuration;
@@ -57,12 +58,11 @@ builder.Services.AddSwaggerGen();
 
 
 //Add DbContext
-/*
-builder.Services.AddDbContext<DreamsContext>(options =>
+builder.Services.AddDbContext<TenisContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("StringConexaoSQLServer"));
 });
-*/
+
 
 var app = builder.Build();
 
@@ -73,7 +73,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseCors(MyAllowSpecificOrigins);
 
 //Authetication & Authorization
