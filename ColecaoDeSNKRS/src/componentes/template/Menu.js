@@ -1,8 +1,17 @@
 import './Menu.css';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
+import AuthService from '../../Services/AuthService';
 
-export default function Menu(props) {
+export default function Menu(_props) {
+    const [currentUser, setCurrentUser] = useState(undefined)
+
+    useEffect(() => {
+        const user = AuthService.getCurrentUser()
+        if (user){
+            setCurrentUser(user)
+        }
+    })
     return(
         <nav className='menu'>
             <a href="/tenis">
@@ -13,9 +22,16 @@ export default function Menu(props) {
                 Editar Coleção
             </a>
             <div className='espaco'></div>
-            <a href="/login/logout">
-                Login/Logout
-            </a>
+            
+            {currentUser ? (
+                <Link to="/logout">
+                    Logout
+                </Link>
+            ) : (
+                <Link to="/login">
+                    Login
+                </Link>
+            )}
         </nav>
     )
 }

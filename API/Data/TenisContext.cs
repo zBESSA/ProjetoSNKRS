@@ -14,5 +14,6 @@ namespace API.Data
             options.UseSqlServer(Configuration.GetConnectionString("StringConexaoSQLServer"));
         }
         public DbSet<Tenis> Tenis {get; set;}
+        public DbSet<User>? Usuario {get; set;}
     }
 }

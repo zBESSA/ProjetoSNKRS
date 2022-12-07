@@ -5,23 +5,28 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using API.Data;
 using API.Modelos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TenisController: ControllerBase{
+    public class TenisController: Controller{
         private readonly TenisContext _context;
         public TenisController(TenisContext context){
             _context = context;
         }
 
         [HttpGet]
+        [Authorize(Roles = "dono")]
+
         public ActionResult<List<Tenis>> GetAll(){
             return _context.Tenis.ToList();
         }
 
         [HttpGet("{TenisId}")]
+        [Authorize(Roles = "dono")]
+
         public ActionResult<List<Tenis>> Get(int TenisId){
             try{
                 var result = _context.Tenis.Find(TenisId);
@@ -36,6 +41,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "dono")]
         public async Task<ActionResult> post(Tenis model){
             try{
                 _context.Tenis.Add(model);
@@ -50,7 +56,8 @@ namespace API.Controllers
             
         }
 
-        [HttpPut("{TenisCod}")]
+        [HttpPut("{TenisId}")]
+        //[Authorize(Roles = "dono")]
         public async Task<ActionResult> put(int TenisId, Tenis dadosTenisAlt){
             try{
                 var result = await _context.Tenis.FindAsync(TenisId);
@@ -70,6 +77,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{TenisId}")]
+        //[Authorize(Roles = "dono")]
         public async Task<ActionResult> delete(int TenisId){
             try{
                 var tenis = await _context.Tenis.FindAsync(TenisId);

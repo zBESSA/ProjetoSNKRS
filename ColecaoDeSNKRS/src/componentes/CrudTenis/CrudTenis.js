@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './CrudTenis.css';
 import Main from '../template/Main';
+import UserService from '../../Services/UserService';
 
 const title = "Coleção de Tenis";
 
@@ -11,14 +12,27 @@ const initialState = {
     lista: []
 }
 
+const user = JSON.parse(localStorage.getItem("user"));
+
 export default class CrudTenis extends Component {
 
     state = {...initialState}
 
     componentDidMount(){
-        axios(urlAPI).then(resp =>{
-           this.setState({lista:resp.data})
-        })
+        UserService.getColecionadorBoard()
+        .then(response =>{
+                this.setState({lista: response.data});
+            },
+            (error) => {
+                const _mens = (
+                    error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                    error.message ||
+                    error.toString();
+                    this.setState({mens : _mens});
+            }
+        );
     }
 
     limpar(){
@@ -66,7 +80,7 @@ export default class CrudTenis extends Component {
                     </thead>
 
                     <tbody>
-                        {this.state.lista.map(
+                    {this.state.lista.map(
                             (tenis) =>
                             <tr key={tenis.id}>
                                 <td>{tenis.cod}</td>
@@ -83,7 +97,12 @@ export default class CrudTenis extends Component {
     render() {
         return (
             <Main title={title}>
-                {this.renderTable()}
+                {
+                    (this.state.mens != null) ? 'Problema com conexão ou autorização (contactar administrador).' :
+                    <>
+                        {this.renderTable()}
+                    </> 
+                }
             </Main>
         )
     }

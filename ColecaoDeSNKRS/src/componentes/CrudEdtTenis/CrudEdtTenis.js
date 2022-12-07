@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './CrudEdtTenis.css';
 import Main from '../template/Main';
+import UserService from '../../Services/UserService';
 
 const title = "Editar Coleção de Tenis";
 
@@ -10,15 +11,28 @@ const initialState = {
     tenis: {id: 0, cod: '', nome:'', tamanho: 0},
     lista: []
 }
+const user = JSON.parse(localStorage.getItem('user'))
 
 export default class CrudTenis extends Component {
 
     state = {...initialState}
 
-    componentDidMount(){
-        axios(urlAPI).then(resp =>{
-           this.setState({lista:resp.data})
-        })
+    componentDidMount() {
+        UserService.getDonoBoard().then(
+            (response) => {
+                this.setState({ lista: response.data })
+            },
+            (error) => {
+                const _mens =
+                    (error.response &&
+                        error.response.data &&
+                        error.response.data.message) ||
+                    error.message ||
+                    error.toString()
+                this.setState({mens: _mens})
+                console.log('_mens: ' + _mens)
+            }
+        )
     }
 
     limpar(){
@@ -33,7 +47,7 @@ export default class CrudTenis extends Component {
         tenis.id = Number(tenis.id)
         console.log(this.state.tenis)
 
-        axios[metodo](url, tenis)
+        axios[metodo](url, tenis,{headers:{Authorization:'Bearer ' + user.token}})
             .then(resp => {
                 const lista = this.getListaAtualizada(resp.data)
                 this.setState({tenis: initialState.tenis, lista})
@@ -66,7 +80,7 @@ export default class CrudTenis extends Component {
         if(window.confirm("Confirma excluimento do tenis: " + tenis.cod)){
             console.log("entrou no confirm")
 
-            axios['delete'](url, tenis)
+            axios['delete'](url, tenis,{headers:{Authorization:'Bearer ' + user.token}})
                 .then(resp => {
                     const lista = this.getListaAtualizada(tenis, false)
                     this.setState({tenis: initialState.tenis, lista})
@@ -160,8 +174,14 @@ export default class CrudTenis extends Component {
     render() {
         return (
             <Main title={title}>
-                {this.renderForm()}
-                {this.renderTable()}
+                {console.log(this.state.mens)}
+                {
+                    (this.state.mens != null) ? 'Problema com conexão ou autorização (contactar administrador).' :
+                    <>
+                        {this.renderForm()}
+                        {this.renderTable()}
+                    </> 
+                }
             </Main>
         )
     }
